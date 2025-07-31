@@ -13,70 +13,70 @@ jobs:
     if: github.event_name == 'push' || (github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout source repo
-        uses: actions/checkout@v4
+    # steps:
+    #   - name: Checkout source repo
+    #     uses: actions/checkout@v4
 
-      - name: Checkout target repo
-        uses: actions/checkout@v4
-        with:
-          repository: DerEns86/sync-target
-          token: ${{ secrets.TARGET_REPO_TOKEN }}
-          path: target-repo
+    #   - name: Checkout target repo
+    #     uses: actions/checkout@v4
+    #     with:
+    #       repository: DerEns86/sync-target
+    #       token: ${{ secrets.TARGET_REPO_TOKEN }}
+    #       path: target-repo
 
-      - name: Copy files to target repo
-        run: |
-          # Kopiere alle Markdown-Dateien vom Source zum Target
-          cp -r *.md target-repo/ || true
+    #   - name: Copy files to target repo
+    #     run: |
+    #       # Kopiere alle Markdown-Dateien vom Source zum Target
+    #       cp -r *.md target-repo/ || true
 
-      - name: Check for changes
-        id: check_changes
-        run: |
-          cd target-repo
-          if [[ -n $(git status --porcelain) ]]; then
-            echo "changes=true" >> $GITHUB_OUTPUT
-          else
-            echo "changes=false" >> $GITHUB_OUTPUT
-          fi
+    #   - name: Check for changes
+    #     id: check_changes
+    #     run: |
+    #       cd target-repo
+    #       if [[ -n $(git status --porcelain) ]]; then
+    #         echo "changes=true" >> $GITHUB_OUTPUT
+    #       else
+    #         echo "changes=false" >> $GITHUB_OUTPUT
+    #       fi
 
-      - name: Create Pull Request
-        if: steps.check_changes.outputs.changes == 'true'
-        uses: peter-evans/create-pull-request@v5
-        with:
-          token: ${{ secrets.TARGET_REPO_TOKEN }}
-          path: target-repo
-          commit-message: |
-            feat: Sync changes from source repository
+    #   - name: Create Pull Request
+    #     if: steps.check_changes.outputs.changes == 'true'
+    #     uses: peter-evans/create-pull-request@v5
+    #     with:
+    #       token: ${{ secrets.TARGET_REPO_TOKEN }}
+    #       path: target-repo
+    #       commit-message: |
+    #         feat: Sync changes from source repository
 
-            Automated sync from sync-source
-            Source commit: ${{ github.sha }}
+    #         Automated sync from sync-source
+    #         Source commit: ${{ github.sha }}
 
-            Co-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
-          branch: sync/source-repo-${{ github.run_number }}
-          delete-branch: true
-          title: "🔄 Sync: Update from source repository"
-          body: |
-            ## Automated Sync
+    #         Co-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+    #       branch: sync/source-repo-${{ github.run_number }}
+    #       delete-branch: true
+    #       title: "🔄 Sync: Update from source repository"
+    #       body: |
+    #         ## Automated Sync
 
-            This PR contains synchronized changes from the source repository.
+    #         This PR contains synchronized changes from the source repository.
 
-            **Source Repository**: [sync-source](https://github.com/DerEns86/sync-source)
-            **Source Commit**: ${{ github.sha }}
-            **Triggered by**: ${{ github.event_name }}
+    #         **Source Repository**: [sync-source](https://github.com/DerEns86/sync-source)
+    #         **Source Commit**: ${{ github.sha }}
+    #         **Triggered by**: ${{ github.event_name }}
 
-            ### Changes
-            - Updated Markdown files from source repository
+    #         ### Changes
+    #         - Updated Markdown files from source repository
 
-            ---
-            *This PR was automatically created by GitHub Actions*
-          labels: |
-            automated
-            sync
+    #         ---
+    #         *This PR was automatically created by GitHub Actions*
+    #       labels: |
+    #         automated
+    #         sync
 
   sync-direct-commit:
     # Alternative: Direkter Commit auf main
     # Kommentiere die obige Job aus und aktiviere diese für direkten Commit
-    if: false # Setze auf true um diese Variante zu aktivieren
+    if: true # Setze auf true um diese Variante zu aktivieren
     runs-on: ubuntu-latest
 
     steps:
