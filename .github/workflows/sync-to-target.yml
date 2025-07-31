@@ -13,31 +13,31 @@ jobs:
     if: github.event_name == 'push' || (github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
 
-    # steps:
-    #   - name: Checkout source repo
-    #     uses: actions/checkout@v4
+    steps:
+      - name: Checkout source repo
+        uses: actions/checkout@v4
 
-    #   - name: Checkout target repo
-    #     uses: actions/checkout@v4
-    #     with:
-    #       repository: DerEns86/sync-target
-    #       token: ${{ secrets.TARGET_REPO_TOKEN }}
-    #       path: target-repo
+      - name: Checkout target repo
+        uses: actions/checkout@v4
+        with:
+          repository: DerEns86/sync-target
+          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          path: target-repo
 
-    #   - name: Copy files to target repo
-    #     run: |
-    #       # Kopiere alle Markdown-Dateien vom Source zum Target
-    #       cp -r *.md target-repo/ || true
+      - name: Copy files to target repo
+        run: |
+          # Kopiere alle Markdown-Dateien vom Source zum Target
+          cp -r *.md target-repo/ || true
 
-    #   - name: Check for changes
-    #     id: check_changes
-    #     run: |
-    #       cd target-repo
-    #       if [[ -n $(git status --porcelain) ]]; then
-    #         echo "changes=true" >> $GITHUB_OUTPUT
-    #       else
-    #         echo "changes=false" >> $GITHUB_OUTPUT
-    #       fi
+      - name: Check for changes
+        id: check_changes
+        run: |
+          cd target-repo
+          if [[ -n $(git status --porcelain) ]]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+          fi
 
     #   - name: Create Pull Request
     #     if: steps.check_changes.outputs.changes == 'true'
