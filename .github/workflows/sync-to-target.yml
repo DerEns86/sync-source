@@ -20,7 +20,7 @@ jobs:
       - name: Checkout target repo
         uses: actions/checkout@v4
         with:
-          repository: berger-engineering-io/poc-gh-sync-target
+          repository: DerEns86/sync-target
           token: ${{ secrets.TARGET_REPO_TOKEN }}
           path: target-repo
 
@@ -48,7 +48,7 @@ jobs:
           commit-message: |
             feat: Sync changes from source repository
 
-            Automated sync from poc-gh-sync-source
+            Automated sync from sync-source
             Source commit: ${{ github.sha }}
 
             Co-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
@@ -60,7 +60,7 @@ jobs:
 
             This PR contains synchronized changes from the source repository.
 
-            **Source Repository**: [poc-gh-sync-source](https://github.com/DerEns86/sync-source)
+            **Source Repository**: [sync-source](https://github.com/DerEns86/sync-source)
             **Source Commit**: ${{ github.sha }}
             **Triggered by**: ${{ github.event_name }}
 
@@ -107,7 +107,7 @@ jobs:
           if [[ -n $(git status --porcelain) ]]; then
             git add .
             git commit -m "feat: Sync changes from source repository" \
-                       -m "Automated sync from poc-gh-sync-source" \
+                       -m "Automated sync from sync-source" \
                        -m "Source commit: ${{ github.sha }}" \
                        -m "Co-authored-by: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
             git push
